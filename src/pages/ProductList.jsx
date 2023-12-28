@@ -1,4 +1,5 @@
 import React, { useState,useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Icon, Label, Menu, Table } from "semantic-ui-react";
 import ProductService from "../services/productService";
 
@@ -7,12 +8,9 @@ export default function ProductList() {
 
   useEffect(()=>{
     let productService = new ProductService()
-    productService.getProducts().then(result=>setProducts(result.data.items))
-  })
-useEffect(()=>{
+    productService.getProducts().then(result=>setProducts(result.data.products))
+  },[])
 
-console.log(products)
-},[products]);
   return (
     <div>
       <Table celled>
@@ -25,15 +23,14 @@ console.log(products)
             <Table.HeaderCell>Kategori</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
-
         <Table.Body>
           {products.map((product) => (
             <Table.Row key={product.id}>
-              <Table.Cell>{product.productName}</Table.Cell>
-              <Table.Cell>{product.unitPrice}</Table.Cell>
-              <Table.Cell>{product.unitsInStock}</Table.Cell>
-              <Table.Cell>{product.quantityPerUnit}</Table.Cell>
-              <Table.Cell>{product.categoryName}</Table.Cell>
+              <Table.Cell><Link to={`/products/${product.id}`}>{product.title}</Link></Table.Cell>
+              <Table.Cell>{product.price}</Table.Cell>
+              <Table.Cell>{product.stock}</Table.Cell>
+              <Table.Cell>{product.description}</Table.Cell>
+              <Table.Cell>{product.category}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
